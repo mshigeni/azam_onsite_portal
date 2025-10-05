@@ -4249,27 +4249,27 @@
             //     return;
             // }
 
-            // ✅ Call backend for dashboard data
-            // $.ajax({
-            //     type: "GET",
-            //     url: "http://azam-onsite.local:9090/api/dashboard/data",
-            //     headers: {
-            //         "Authorization": "Bearer " + token
-            //     },
-            //     success: function (res) {
-            //         $("#welcome").text("Welcome " + res.user + "! 🎉");
-            //     },
-            //     error: function (xhr) {
-            //         if (xhr.status === 401) {
-            //             alert("Session expired, please login again.");
-            //             window.location.href = '{{ route("logout") }}';
-            //         } else if (xhr.status === 403) {
-            //             alert("Forbidden: wrong role.");
-            //             window.location.href = '{{ route("logout") }}';
-            //         }
-            //     }
-            // });
-
+            // 1️⃣ Initial snapshot from REST
+            $.ajax({
+                url: "http://azam-onsite.local:9090/api/dashboard/summary",
+                headers: { "Authorization": "Bearer " + token },
+                success: function (data) {
+                    $("#totalTrxs").text(data.totalTrxs);
+                    $("#magogoniTrxs").text(data.magogoniTrxs);
+                    $("#kigamboniTrxs").text(data.kigamboniTrxs);
+                    $("#offlineTrxs").text(data.offlineTrxs);
+                },
+                error: function (xhr) {
+                    console.error("Failed to load initial summary", xhr);
+                    if (xhr.status === 401) {
+                        alert("Session expired, please login again.");
+                        window.location.href = '{{ route("logout") }}';
+                    } else if (xhr.status === 403) {
+                        alert("Forbidden: wrong role.");
+                        window.location.href = '{{ route("logout") }}';
+                    }
+                }
+            });
 
             // Get today's date in YYYY-MM-DD format
             const todayDate = new Date().toISOString().split('T')[0];
@@ -4277,11 +4277,24 @@
             document.getElementById("valueInputStartDate").value = todayDate;
             document.getElementById("valueInputEndDate").value = todayDate;
 
+            function updateWsStatus(connected) {
+                const statusEl = document.getElementById("wsStatus");
+                if (connected) {
+                    statusEl.textContent = "🟢 Connected";
+                    statusEl.className = "badge bg-success";
+                } else {
+                    statusEl.textContent = "🔴 Disconnected";
+                    statusEl.className = "badge bg-danger";
+                }
+            }
+            
             // ✅ WebSocket connection
             function connect() {
                 console.log("Connecting to WebSocket...");
                 const socket = new SockJS("http://azam-onsite.local:9090/ws");
+
                 const stompClient = Stomp.over(socket);
+                let reconnectDelay = 2000; // start with 2 seconds
 
                 // Optionally disable debug logs
                 stompClient.debug = null;
@@ -4290,6 +4303,8 @@
                     { Authorization: "Bearer " + token }, // ✅ send JWT if needed
                     function () {
                         console.log("✅ Connected to WebSocket!");
+                        updateWsStatus(true);
+                        reconnectDelay = 2000; 
 
                         // Subscribe to topic
                         stompClient.subscribe("/topic/dashboard", function (message) {
@@ -4307,6 +4322,14 @@
                     },
                     function (error) {
                         console.error("❌ WebSocket error:", error);
+                        updateWsStatus(false);
+                        console.log(`Reconnecting in ${reconnectDelay / 1000} seconds...`);
+                        // Attempt reconnect after delay
+                        setTimeout(() => {
+                            reconnectDelay = Math.min(reconnectDelay * 2, 30000); // max 30s
+                            console.log(`♻️ Reconnecting in ${reconnectDelay / 1000}s...`);
+                            connect();
+                        }, reconnectDelay);
                     }
                 );
             }
