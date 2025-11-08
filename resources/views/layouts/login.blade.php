@@ -213,6 +213,17 @@
     
     <script>
         $(document).ready(function () {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('password-addon');
+            const toggleIcon = document.getElementById('toggle-icon');
+
+            toggleButton.addEventListener('click', function() {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleIcon.classList.toggle('ri-eye-fill', !isPassword);
+                toggleIcon.classList.toggle('ri-eye-off-fill', isPassword);
+            });
+            
             $('#signIn').click(function () {
                 
                 console.log($("#username").val());

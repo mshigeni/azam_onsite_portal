@@ -42,7 +42,7 @@
                       <a href="{{ url("/dashboard") }}" class="nav-link" data-key="t-analytics"> Dashboard </a>
                     </li>
                     <li class="nav-item">
-                      <a href="{{ url("/new-form") }}" class="nav-link" data-key="t-analytics"> Real-Time </a>
+                      <a href="{{ url("/realtime") }}" class="nav-link" data-key="t-analytics"> Real-Time </a>
                     </li>
                     <li class="nav-item">
                       <a href="{{ url("/my-forms") }}" class="nav-link" data-key="t-analytics"> Others </a>
@@ -61,7 +61,7 @@
                 <div class="collapse menu-dropdown" id="dropManagement">
                   <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                      <a href="{{ url("/users") }}" class="nav-link" data-key="t-analytics"> Online/Offline </a>
+                      <a href="{{ url("/devices") }}" class="nav-link" data-key="t-analytics"> Devices</a>
                       <a href="{{ url("/users") }}" class="nav-link" data-key="t-analytics"> Users </a>
                     </li>
                   </ul>

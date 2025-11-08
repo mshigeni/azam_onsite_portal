@@ -145,7 +145,7 @@
                               </div>
                               <div class="d-flex align-items-end justify-content-between mt-4">
                                   <div>
-                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4 text-white">TZS <span class="counter-value" data-target="0">0</span></h4>
+                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4 text-white">TZS <span class="counter-value" data-target="0" id="totalAmount">0</span></h4>
                                       <!-- <a href="#" class="text-decoration-underline text-white-50">Total Amount</a> -->
                                       <a href="#" class="text-decoration-underline text-white">View Total earnings</a>
                                   </div>
@@ -177,7 +177,7 @@
                               </div>
                               <div class="d-flex align-items-end justify-content-between mt-4">
                                   <div>
-                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0">0</span></h4>
+                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0" id="magogoniAmount">0</span></h4>
                                       <a href="#" class="text-decoration-underline">View Magogoni earnings</a>
                                   </div>
                                   <div class="avatar-sm flex-shrink-0">
@@ -207,7 +207,7 @@
                               </div>
                               <div class="d-flex align-items-end justify-content-between mt-4">
                                   <div>
-                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0">0</span></h4>
+                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0" id="kigmamboniAmount">0</span></h4>
                                       <a href="#" class="text-decoration-underline">View Kigamboni earnings</a>
                                   </div>
                                   <div class="avatar-sm flex-shrink-0">
@@ -236,7 +236,7 @@
                               </div>
                               <div class="d-flex align-items-end justify-content-between mt-4">
                                   <div>
-                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0">0</span></h4>
+                                      <h4 class="fs-22 fw-semibold ff-secondary mb-4">TZS <span class="counter-value" data-target="0" id="offlineAmount">0</span></h4>
                                       <a href="#" class="text-decoration-underline">View Offline Amount</a>
                                   </div>
                                   <div class="avatar-sm flex-shrink-0">

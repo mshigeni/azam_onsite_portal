@@ -997,1236 +997,6 @@
 
             });
 
-            $('#saveTaarifaBinafsi').click(function () {
-
-                let selects = document.querySelectorAll('.taarifa-binafsi-select');
-
-                let allValid = true;
-
-                // Tafuta input zote tunazotaka kuangalia
-                var fields = [
-                    document.getElementById('valueInputNambaJeshi'),
-                    document.getElementById('valueInputFirstName'),
-                    document.getElementById('valueInputMiddleName'),
-                    document.getElementById('valueInputLastName'),
-                    document.getElementById('valueInputUjuzi'),
-                    document.getElementById('valueInputCno'),
-                    document.getElementById('valueInputNambaKitambulisho'),
-                    document.getElementById('valueInputKombania'),
-                    document.getElementById('valueInputKikosiUlichotoka'),
-                    document.getElementById('valueInputTareheKuzaliwa'),
-                    document.getElementById('valueInputUzito'),
-                    document.getElementById('valueInputUrefu'),
-                    document.getElementById('valueInputTareheKujiungaJeshi'),
-                    document.getElementById('valueInputTareheKamisheni'),
-                    document.getElementById('valueInputTareheKupandaCheo'),
-                    document.getElementById('valueInputTareheKustaafu'),
-                    document.getElementById('valueInputAnuani'),
-                    document.getElementById('valueInputNambaSimu'),
-                    document.getElementById('valueInputMkoaUliozaliwa'),
-                    document.getElementById('valueInputWilaya'),
-                    document.getElementById('valueInputTarafa'),
-                    document.getElementById('valueInputKata'),
-                    document.getElementById('valueInputKijiji'),
-                    document.getElementById('valueInputKitongoji'),
-                ];
-
-                fields.some(function(field) {
-                    const isOptional = field.getAttribute("data-optional") === "true";
-                    if (field.value.trim() === "" && !isOptional) {
-                        field.classList.add("is-invalid");
-                        allValid = false;
-                        
-                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        field.focus();
-                        return true;
-                    } else {
-                        field.classList.remove("is-invalid");
-                        return false;
-                    }
-                });
-
-
-                console.log("VALID B4 : " + allValid);
-                
-                if (allValid) {
-                    Array.from(selects).some(function(select) {
-                        if (select.value === "0") {
-                            console.log("VALID VALUE : " + select.value);
-                            console.log("VALID B4 HERE : " + allValid);
-                            select.classList.add("is-invalid");
-                            allValid = false;
-
-                            // Smooth scroll and focus
-                            select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            select.focus();
-
-                            return true; // exit loop early
-                        } else {
-                            select.classList.remove("is-invalid");
-                            allValid = true;
-                            return false;
-                        }
-
-                        console.log("VALID AFTR : " + allValid);
-                    });
-                }
-
-                // Reuse the same fields array for input validation
-                fields.forEach(function (field) {
-                    field.addEventListener('input', function () {
-                        if (this.value.trim() !== "") {
-                            this.classList.remove("is-invalid");
-                            // Optionally: this.classList.add("is-valid");
-                            allValid = true;
-                        }
-                    });
-                });
-
-                // Live remove is-invalid on select change
-                selects.forEach(function (select) {
-                    select.addEventListener('change', function () {
-                        if (this.value !== "0") {
-                            this.classList.remove("is-invalid");
-                            allValid = true;
-                        }
-                    });
-                });
-
-
-                console.log("VALID : " + allValid);
-
-                if (allValid) {
-                // Kama zote ziko sawa, sasa tuma form
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-                    const cheo = document.getElementById('selectCheo').value;
-                    const first_name = document.getElementById('valueInputFirstName').value;
-                    const middle_name = document.getElementById('valueInputMiddleName').value;
-                    const last_name = document.getElementById('valueInputLastName').value;
-                    const ujuzi = document.getElementById('valueInputUjuzi').value;
-                    const cno = document.getElementById('valueInputCno').value;
-                    const namba_kitambulisho = document.getElementById('valueInputNambaKitambulisho').value;
-                    const kikosi = document.getElementById('selectKikosi').value;
-                    const kombania = document.getElementById('valueInputKombania').value;
-                    const elimu = document.getElementById('selectElimu').value;
-                    const kikosi_ulichotoka = document.getElementById('valueInputKikosiUlichotoka').value;
-                    const dob = document.getElementById('valueInputTareheKuzaliwa').value;
-                    const kundi_damu = document.getElementById('selectKundiDamu').value;
-                    const uzito = document.getElementById('valueInputUzito').value;
-                    const urefu = document.getElementById('valueInputUrefu').value;
-                    const tarehe_kujiunga_jeshi = document.getElementById('valueInputTareheKujiungaJeshi').value;
-                    const tarehe_kamisheni = document.getElementById('valueInputTareheKamisheni').value;
-                    const tarehe_kupanda_cheo = document.getElementById('valueInputTareheKupandaCheo').value;
-                    const tarehe_kustaafu = document.getElementById('valueInputTareheKustaafu').value;
-                    const anuani = document.getElementById('valueInputAnuani').value;
-                    const namba_simu = document.getElementById('valueInputNambaSimu').value;
-                    const dini = document.getElementById('selectDini').value;
-                    const mkoa_kuzaliwa = document.getElementById('valueInputMkoaUliozaliwa').value;
-                    const wilaya = document.getElementById('valueInputWilaya').value;
-                    const tarafa = document.getElementById('valueInputTarafa').value;
-                    const kata = document.getElementById('valueInputKata').value;
-                    const kijiji = document.getElementById('valueInputKijiji').value;
-                    const kitongoji = document.getElementById('valueInputKitongoji').value;
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-                
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-                    $.ajax({
-                        url: '/wanamaji/save-taarifa-binafsi',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            cheo : cheo,
-                            first_name: first_name,
-                            middle_name: middle_name,
-                            last_name: last_name,
-                            ujuzi : ujuzi,
-                            cno : cno,
-                            namba_kitambulisho : namba_kitambulisho,
-                            kikosi: kikosi,
-                            kombania: kombania,
-                            elimu: elimu,
-                            kikosi_ulichotoka: kikosi_ulichotoka,
-                            dob: dob,
-                            kundi_damu: kundi_damu,
-                            uzito: uzito,
-                            urefu: urefu,
-                            tarehe_kujiunga_jeshi: tarehe_kujiunga_jeshi,
-                            tarehe_kamisheni: tarehe_kamisheni,
-                            tarehe_kupanda_cheo: tarehe_kupanda_cheo,
-                            tarehe_kustaafu: tarehe_kustaafu,
-                            anuani: anuani,
-                            namba_simu: namba_simu,
-                            dini: dini,
-                            mkoa_kuzaliwa: mkoa_kuzaliwa,
-                            wilaya: wilaya,
-                            tarafa: tarafa,
-                            kata: kata,
-                            kijiji: kijiji,
-                            kitongoji: kitongoji,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                taarifaBinafsiSaved = 1; //Hii kuruhusu other saving buttons to work
-                                
-                                console.log('Data saved successfully:', response);
-
-                                $('#valueInputNambaJeshi').prop('disabled', true);
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToast').length) {
-
-                                        $('#borderedSuccessToast .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToast'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-            
-            });
-
-            $('#saveKoziKijeshi').click(function () {
-
-                // let selects = document.querySelectorAll('.-select');
-
-                let allValid = true;
-
-
-                document.querySelectorAll('[id^="mwanajeshi_select"]').forEach(selectEl => {
-                    const match = selectEl.id.match(/\d+$/); 
-                    if (!match) return;
-                    const koziElementID = match[0]; 
-                    
-                    console.log("Kozi # : " + koziElementID);
-
-                    // let selects = document.querySelectorAll('.kozi-kijeshi-select');
-
-                    // Tafuta input zote tunazotaka kuangalia
-                    var fields = [
-                        document.getElementById(`mwanajeshi_select${koziElementID}`),
-                        document.getElementById(`aina_kozi_select${koziElementID}`),
-                        document.getElementById(`kozi_select${koziElementID}`),
-                        document.getElementById(`valueInputJinaKozi${formCountKozi}`),
-                        document.getElementById(`valueInputIntake${formCountKozi}`),
-                        document.getElementById(`valueInputMwaka${formCountKozi}`),
-                        document.getElementById(`valueInputTraining${formCountKozi}`),      
-                    ];
-
-                    fields.some(function(field) {
-                        const isOptional = field.getAttribute("data-optional") === "true";
-                        const isHidden = field.offsetParent === null;
-                        if (!isHidden && field.value.trim() === "" && !isOptional) {
-                            field.classList.add("is-invalid");
-                            allValid = false;
-                            
-                            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            field.focus();
-                            return true;
-                        } else {
-                            field.classList.remove("is-invalid");
-                            allValid = true;
-                            return false;
-                        }
-                    });
-
-                    console.log("VALID KOZI : " + allValid);
-
-                    // Reuse the same fields array for input validation
-                    fields.forEach(function (field) {
-                        field.addEventListener('input', function () {
-                            if (this.value.trim() !== "") {
-                                this.classList.remove("is-invalid");
-                                // Optionally: this.classList.add("is-valid");
-                                allValid = true;
-                            }
-                        });
-                    });
-
-
-                    console.log("VALID TWO : " + allValid);
-
-                    if (allValid) {
-
-                        document.querySelectorAll('.kozi-kijeshi-select-wrapper').forEach(wrapper => {
-                            // const isVisible = wrapper.offsetHeight > 0 && wrapper.offsetParent !== null;
-                            const select = wrapper.querySelector('select');
-
-                            if (select && select.value === "0") {
-                                select.classList.add("is-invalid");
-                                allValid = false;
-
-                                // Smooth scroll and focus
-                                select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                select.focus();
-                            } else if (select) {
-                                select.classList.remove("is-invalid");
-                            }
-                        });
-
-                    }
-
-                });
-                
-                    console.log("VALID THREE : " + allValid);
-
-                if (allValid) {
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-
-                    if(namba_jeshi == ""){
-                        $('#modalErrorMessage').text("Tafadhali jaza Namba ya Jeshi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-                    else if(taarifaBinafsiSaved == 0){
-                        $('#modalErrorMessage').text("Tafadhali hifadhi kwanza Taarifa Binafsi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-
-                    const allKoziKijeshiData = [];
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-                    //KOZI KIJESHI
-                    $('#koziContainer .form-item').each(function(index, element) {
-                        const koziKijeshiID = $(element).find('.form-select').attr('id').match(/\d+/)[0];  // Directly get the ID of the select element
-
-                        console.log('ITERATION:', koziKijeshiID);
-                        const data_id = document.querySelector(`#valueInputIntake${koziKijeshiID}`).getAttribute("data-id");
-                        const mwanajeshi_id = $(`#mwanajeshi_select${koziKijeshiID}`).val(); 
-                        const aina_kozi_id = $(`#aina_kozi_select${koziKijeshiID}`).val(); 
-                        const kozi_id = $(`#kozi_select${koziKijeshiID}`).val(); 
-                        const jina_kozi = $(`#valueInputJinaKozi${koziKijeshiID}`).val();  // Use the extracted ID to get the value
-                        const intake = $(`#valueInputIntake${koziKijeshiID.match(/\d+/)[0]}`).val();
-                        const mwaka = $(`#valueInputMwaka${koziKijeshiID.match(/\d+/)[0]}`).val();
-                        const taasisi = $(`#valueInputTraining${koziKijeshiID.match(/\d+/)[0]}`).val();
-
-                        allKoziKijeshiData.push({
-                            data_id: data_id,
-                            mwanajeshi_id: mwanajeshi_id,
-                            aina_kozi_id: aina_kozi_id,
-                            kozi_id: kozi_id,
-                            jina_kozi: jina_kozi,
-                            intake: intake,
-                            mwaka: mwaka,
-                            taasisi: taasisi
-                        });
-                    });
-                
-                    $.ajax({
-                        url: '/wanamaji/save-kozi-kijeshi',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            data: allKoziKijeshiData,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                
-                                console.log('Data saved successfully:', response);
-
-                                $('#valueInputNambaJeshi').prop('disabled', true);
-                                // for (let i = 0; i < formCountKozi; i++) {
-                                //     const koziContainer = document.getElementById('koziContainer');
-                                //     const newKoziDiv = koziContainer.querySelector('.new-kozi');
-                                //     if (newKoziDiv) {
-                                //         koziContainer.removeChild(newKoziDiv);
-                                //     }
-                                // }
-                                const allKoziDivs = document.querySelectorAll('#koziContainer .form-item');
-                                allKoziDivs.forEach(div => div.remove());
-                                formCountKozi = 0;
-
-                                populateKoziKijeshi(response.kozi_data, response.kozi_zenyewe);
-
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToastKoziKijeshi').length) {
-
-                                        $('#borderedSuccessToastKoziKijeshi .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToastKoziKijeshi'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-            
-            });
-
-            $('#saveElimuRaia').click(function () {
-
-                let allValid = true;
-
-                document.querySelectorAll('[id^="elimu_kiraia_select"]').forEach(selectEl => {
-                    const match = selectEl.id.match(/\d+$/); 
-                    if (!match) return;
-                    const raiaElementID = match[0]; 
-                    
-                    console.log("Raia # : " + raiaElementID);
-
-                    let selects = document.querySelectorAll('.elimu-raia-select');
-
-                    // Tafuta input zote tunazotaka kuangalia
-                    var fields = [
-                        document.getElementById(`elimu_kiraia_select${raiaElementID}`),
-                        document.getElementById(`valueInputTaasisi${raiaElementID}`),
-                        document.getElementById(`valueInputMwakaKuanza${raiaElementID}`),
-                        document.getElementById(`valueInputMwakaKumaliza${raiaElementID}`),
-                        document.getElementById(`valueInputProfession${raiaElementID}`),
-                        document.getElementById(`select_daraja${raiaElementID}`),
-                    ];
-
-                    fields.some(function(field) {
-                        const isOptional = field.getAttribute("data-optional") === "true";
-                        const isHidden = field.offsetParent === null;
-                        if (!isHidden && field.value.trim() === "" && !isOptional) {
-                            field.classList.add("is-invalid");
-                            allValid = false;
-                            
-                            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            field.focus();
-                            return true;
-                        } else {
-                            field.classList.remove("is-invalid");
-                            allValid = true;
-                            return false;
-                        }
-                    });
-
-                    console.log("VALID RAIA : " + allValid);
-
-                    // Reuse the same fields array for input validation
-                    fields.forEach(function (field) {
-                        field.addEventListener('input', function () {
-                            if (this.value.trim() !== "") {
-                                this.classList.remove("is-invalid");
-                                // Optionally: this.classList.add("is-valid");
-                                allValid = true;
-                            }
-                        });
-                    });
-
-                    if (allValid) {
-
-                        document.querySelectorAll('.elimu-daraja-wrapper').forEach(wrapper => {
-                            const isVisible = wrapper.offsetHeight > 0 && wrapper.offsetParent !== null;
-                            const select = wrapper.querySelector('select');
-
-                            if (isVisible && select && select.value === "0") {
-                                select.classList.add("is-invalid");
-                                allValid = false;
-
-                                // Smooth scroll and focus
-                                select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                select.focus();
-                            } else if (select) {
-                                select.classList.remove("is-invalid");
-                            }
-                        });
-                    }
-
-                });
-
-                // Live remove is-invalid on select change
-                // selects.forEach(function (select) {
-                //     select.addEventListener('change', function () {
-                //         if (this.value !== "0") {
-                //             this.classList.remove("is-invalid");
-                //             allValid = true;
-                //         }
-                //     });
-                // });
-
-
-                console.log("VALID : " + allValid);
-
-                if (allValid) {
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-
-                    if(namba_jeshi == ""){
-                        $('#modalErrorMessage').text("Tafadhali jaza Namba ya Jeshi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-                    else if(taarifaBinafsiSaved == 0){
-                        $('#modalErrorMessage').text("Tafadhali hifadhi kwanza Taarifa Binafsi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-
-
-                    const allElimuKiraiaData = [];
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-                    //ELIMU KIRAIA
-                    $('#elimuRaiaContainer .form-item').each(function(index, element) {
-                        const elimuKiraiaID = $(element).find('.form-select').attr('id').match(/\d+/)[0];  // Directly get the ID of the select element
-
-                        console.log('ITERATION:', elimuKiraiaID);
-                        const data_id = document.querySelector(`#valueInputTaasisi${elimuKiraiaID}`).getAttribute("data-id");
-                        const elimu = $(`#elimu_kiraia_select${elimuKiraiaID}`).val();  // Use the extracted ID to get the value
-                        const jina_taasisi = $(`#valueInputTaasisi${elimuKiraiaID}`).val();  // Use the extracted ID to get the value
-                        const mwaka_kuanza = $(`#valueInputMwakaKuanza${elimuKiraiaID.match(/\d+/)[0]}`).val();
-                        const mwaka_kumaliza = $(`#valueInputMwakaKumaliza${elimuKiraiaID.match(/\d+/)[0]}`).val();
-                        const select_daraja = $(`#select_daraja${elimuKiraiaID.match(/\d+/)[0]}`).val();
-                        const profession = $(`#valueInputProfession${elimuKiraiaID.match(/\d+/)[0]}`).val();
-
-                        allElimuKiraiaData.push({
-                            data_id: data_id,
-                            elimu: elimu,
-                            jina_taasisi: jina_taasisi,
-                            mwaka_kuanza: mwaka_kuanza,
-                            mwaka_kumaliza: mwaka_kumaliza,
-                            daraja: select_daraja,
-                            profession: profession,
-                        });
-                    });
-
-                    $.ajax({
-                        url: '/wanamaji/save-elimu-kiraia',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            data: allElimuKiraiaData,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                
-                                console.log('Data saved successfully:', response);
-
-                                // $('#valueInputNambaJeshi').prop('disabled', true);
-                                // for (let i = 0; i < formCountKozi; i++) {
-                                //     const koziContainer = document.getElementById('koziContainer');
-                                //     const newKoziDiv = koziContainer.querySelector('.new-kozi');
-                                //     if (newKoziDiv) {
-                                //         koziContainer.removeChild(newKoziDiv);
-                                //     }
-                                // }
-                                const allElimuKiraiaDivs = document.querySelectorAll('#elimuRaiaContainer .form-item');
-                                allElimuKiraiaDivs.forEach(div => div.remove());
-                                formCountElimuRaia = 0;
-                                
-                                populateElimuRaia(response.elimu_raia);
-
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToastElimuKiraia').length) {
-
-                                        $('#borderedSuccessToastElimuKiraia .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToastElimuKiraia'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-
-            });
-
-            $('#saveMedali').click(function () {
-
-                // let selects = document.querySelectorAll('.-select');
-
-                let allValid = true;
-
-
-                console.log("Medali # : " + formCountMedali);
-
-                // Tafuta input zote tunazotaka kuangalia
-                var fields = [
-                        document.getElementById(`valueInputAinaMedali${formCountMedali}`),
-                        document.getElementById(`valueInputMwakaAliotunukiwa${formCountMedali}`),
-                ];
-
-                fields.some(function(field) {
-                    const isOptional = field.getAttribute("data-optional") === "true";
-                    if (field.value.trim() === "" && !isOptional) {
-                        field.classList.add("is-invalid");
-                        allValid = false;
-                        
-                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        field.focus();
-                        return true;
-                    } else {
-                        field.classList.remove("is-invalid");
-                        return false;
-                    }
-                });
-
-                console.log("VALID B4 : " + allValid);
-
-                // Reuse the same fields array for input validation
-                fields.forEach(function (field) {
-                    field.addEventListener('input', function () {
-                        if (this.value.trim() !== "") {
-                            this.classList.remove("is-invalid");
-                            // Optionally: this.classList.add("is-valid");
-                            allValid = true;
-                        }
-                    });
-                });
-
-                // Live remove is-invalid on select change
-                // selects.forEach(function (select) {
-                //     select.addEventListener('change', function () {
-                //         if (this.value !== "0") {
-                //             this.classList.remove("is-invalid");
-                //             allValid = true;
-                //         }
-                //     });
-                // });
-
-
-                console.log("VALID : " + allValid);
-
-                if (allValid) {
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-
-                    if(namba_jeshi == ""){
-                        $('#modalErrorMessage').text("Tafadhali jaza Namba ya Jeshi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-                    else if(taarifaBinafsiSaved == 0){
-                        $('#modalErrorMessage').text("Tafadhali hifadhi kwanza Taarifa Binafsi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-
-                    const allMedaliData = [];
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-                    //MEDALI
-                    $('#medaliContainer .form-item').each(function(index, element) {
-                        const $ainaInput = $(element).find("input[id^='valueInputAinaMedali']");// Directly get the ID of the select element
-                        const ainaMedaliID = $ainaInput.attr('id').match(/\d+/)[0];
-
-                        console.log('ITERATION:', ainaMedaliID);
-                        const data_id = document.querySelector(`#valueInputAinaMedali${ainaMedaliID}`).getAttribute("data-id");
-                        const aina_medali = $(`#valueInputAinaMedali${ainaMedaliID}`).val();  // Use the extracted ID to get the value
-                        const mwaka = $(`#valueInputMwakaAliotunukiwa${ainaMedaliID.match(/\d+/)[0]}`).val();
-
-                        allMedaliData.push({
-                            data_id: data_id,
-                            aina_medali: aina_medali,
-                            mwaka: mwaka,
-                        });
-                    });
-                
-                    $.ajax({
-                        url: '/wanamaji/save-aina-medali',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            data: allMedaliData,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                
-                                console.log('Data saved successfully:', response);
-
-                                $('#valueInputNambaJeshi').prop('disabled', true);
-                               
-                                const allMedaliDivs = document.querySelectorAll('#medaliContainer .form-item');
-                                allMedaliDivs.forEach(div => div.remove());
-                                formCountMedali = 0;
-
-                                populateAinaMedali(response.medali);
-
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToastMedali').length) {
-
-                                        $('#borderedSuccessToastMedali .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToastMedali'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-            
-            });
-
-            $('#saveMisheni').click(function () {
-
-
-                let allValid = true;
-
-                document.querySelectorAll('[id^="aina_misheni"]').forEach(selectEl => {
-                    const match = selectEl.id.match(/\d+$/); 
-                    if (!match) return;
-                    const misheniElementID = match[0]; 
-                    
-                    console.log("Misheni # : " + misheniElementID);
-
-                    // Tafuta input zote tunazotaka kuangalia
-                    var fields = [
-                        // document.getElementById(`elimu_kiraia_select${misheniElementID}`),
-                        document.getElementById(`aina_misheni${misheniElementID}`),
-                        document.getElementById(`valueInputAinaMisheni${misheniElementID}`),
-                        document.getElementById(`valueInputMahali${misheniElementID}`),
-                        document.getElementById(`valueInputMwakaMisheni${misheniElementID}`),
-                    ];
-
-                    fields.some(function(field) {
-                        const isOptional = field.getAttribute("data-optional") === "true";
-                        // const isHidden = field.offsetParent === null;
-                        if (field.value.trim() === "" && !isOptional) {
-                            field.classList.add("is-invalid");
-                            allValid = false;
-                            
-                            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            field.focus();
-                            return true;
-                        } else {
-                            field.classList.remove("is-invalid");
-                            allValid = true;
-                            return false;
-                        }
-                    });
-
-                    console.log("VALID MISHENI : " + allValid);
-
-                    // Reuse the same fields array for input validation
-                    fields.forEach(function (field) {
-                        field.addEventListener('input', function () {
-                            if (this.value.trim() !== "") {
-                                this.classList.remove("is-invalid");
-                                // Optionally: this.classList.add("is-valid");
-                                allValid = true;
-                            }
-                        });
-                    });
-
-                    // if (allValid) {
-
-                    //     document.querySelectorAll('.elimu-daraja-wrapper').forEach(wrapper => {
-                    //         const isVisible = wrapper.offsetHeight > 0 && wrapper.offsetParent !== null;
-                    //         const select = wrapper.querySelector('select');
-
-                    //         if (isVisible && select && select.value === "0") {
-                    //             select.classList.add("is-invalid");
-                    //             allValid = false;
-
-                    //             // Smooth scroll and focus
-                    //             select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    //             select.focus();
-                    //         } else if (select) {
-                    //             select.classList.remove("is-invalid");
-                    //         }
-                    //     });
-                    // }
-
-                });
-
-                if (allValid) {
-
-                    document.querySelectorAll('.aina-misheni-select').forEach(wrapper => {
-                        // const isVisible = wrapper.offsetHeight > 0 && wrapper.offsetParent !== null;
-                        const select = wrapper.querySelector('select');
-
-                        if (select && select.value === "0") {
-                            select.classList.add("is-invalid");
-                            allValid = false;
-
-                            // Smooth scroll and focus
-                            select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            select.focus();
-                        } else if (select) {
-                            select.classList.remove("is-invalid");
-                        }
-                    });
-                }
-
-                console.log("VALID : " + allValid);
-
-                if (allValid) {
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-
-                    if(namba_jeshi == ""){
-                        $('#modalErrorMessage').text("Tafadhali jaza Namba ya Jeshi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-                    else if(taarifaBinafsiSaved == 0){
-                        $('#modalErrorMessage').text("Tafadhali hifadhi kwanza Taarifa Binafsi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-
-
-                    const misheniData = [];
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-                    //ELIMU KIRAIA
-                    $('#misheniContainer .form-item').each(function(index, element) {
-                        const misheniID = $(element).find('.form-select').attr('id').match(/\d+/)[0];  // Directly get the ID of the select element
-
-                        console.log('ITERATION:', misheniID);
-                        const data_id = document.querySelector(`#valueInputAinaMisheni${misheniID}`).getAttribute("data-id");
-                        const misheni = $(`#aina_misheni${misheniID}`).val();  // Use the extracted ID to get the value
-                        const aina_misheni = $(`#valueInputAinaMisheni${misheniID}`).val();  // Use the extracted ID to get the value
-                        const mahali = $(`#valueInputMahali${misheniID.match(/\d+/)[0]}`).val();
-                        const mwaka = $(`#valueInputMwakaMisheni${misheniID.match(/\d+/)[0]}`).val();
-
-                        misheniData.push({
-                            data_id: data_id,
-                            misheni: misheni,
-                            aina_misheni: aina_misheni,
-                            mahali: mahali,
-                            mwaka: mwaka,
-                        });
-                    });
-
-                    $.ajax({
-                        url: '/wanamaji/save-misheni',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            data: misheniData,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                
-                                console.log('Data saved successfully:', response);
-
-                                // $('#valueInputNambaJeshi').prop('disabled', true);
-                                // for (let i = 0; i < formCountKozi; i++) {
-                                //     const koziContainer = document.getElementById('koziContainer');
-                                //     const newKoziDiv = koziContainer.querySelector('.new-kozi');
-                                //     if (newKoziDiv) {
-                                //         koziContainer.removeChild(newKoziDiv);
-                                //     }
-                                // }
-                                const allMisheniDivs = document.querySelectorAll('#misheniContainer .form-item');
-                                allMisheniDivs.forEach(div => div.remove());
-                                formCountMisheni = 0;
-                                
-                                populateMisheni(response.misheni);
-
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToastMisheni').length) {
-
-                                        $('#borderedSuccessToastMisheni .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToastMisheni'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-
-            });
-
-            $('#saveTaarifaFamilia').click(function () {
-
-                let selects = document.querySelectorAll('.taarifa-familia-select');
-
-                let allValid = true;
-
-                // Tafuta input zote tunazotaka kuangalia
-                var fields = [
-                    document.getElementById('valueInputJinaBaba'),
-                    document.getElementById('valueInputJinaMama'),
-                    document.getElementById('valueInputJinaMwenza'),
-                    document.getElementById('valueInputJinaBabaMkwe'),
-                    document.getElementById('valueInputJinaMamaMkwe'),
-                    document.getElementById('valueInputJinaMrithi')
-                ];
-                
-
-                fields.some(function(field) {
-                    const isOptional = field.getAttribute("data-optional") === "true";
-                    if (field.value.trim() === "" && !isOptional) {
-                        field.classList.add("is-invalid");
-                        allValid = false;
-                        
-                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        field.focus();
-                        return true;
-                    } else {
-                        field.classList.remove("is-invalid");
-                        return false;
-                    }
-                });
-
-
-                console.log("VALID B4 : " + allValid);
-                
-                if (allValid) {
-                    Array.from(selects).some(function(select) {
-                        if (select.value === "0") {
-                            console.log("VALID VALUE : " + select.value);
-                            console.log("VALID B4 HERE : " + allValid);
-                            select.classList.add("is-invalid");
-                            allValid = false;
-
-                            // Smooth scroll and focus
-                            select.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            select.focus();
-
-                            return true; // exit loop early
-                        } else {
-                            select.classList.remove("is-invalid");
-                            allValid = true;
-                            return false;
-                        }
-
-                        console.log("VALID AFTR : " + allValid);
-                    });
-                }
-
-                // Reuse the same fields array for input validation
-                fields.forEach(function (field) {
-                    field.addEventListener('input', function () {
-                        if (this.value.trim() !== "") {
-                            this.classList.remove("is-invalid");
-                            // Optionally: this.classList.add("is-valid");
-                            allValid = true;
-                        }
-                    });
-                });
-
-                // Live remove is-invalid on select change
-                selects.forEach(function (select) {
-                    select.addEventListener('change', function () {
-                        if (this.value !== "0") {
-                            this.classList.remove("is-invalid");
-                            allValid = true;
-                        }
-                    });
-                });
-
-                console.log("VALID : " + allValid);
-
-                if (allValid && formCountWatoto > 0) {
-
-                    document.querySelectorAll('[id^="valueInputJinaKamiliMtoto"]').forEach(selectEl => {
-                        const match = selectEl.id.match(/\d+$/); 
-                        if (!match) return;
-                        const watotoElementID = match[0]; 
-                        
-                        console.log("Watoto # : " + watotoElementID);
-
-                        // let selects = document.querySelectorAll('.elimu-raia-select');
-
-                        // Tafuta input zote tunazotaka kuangalia
-                        var fields = [
-                            document.getElementById(`valueInputJinaKamiliMtoto${watotoElementID}`)
-                        ];
-
-                        fields.some(function(field) {
-                            const isOptional = field.getAttribute("data-optional") === "true";
-                            const isHidden = field.offsetParent === null;
-                            if (!isHidden && field.value.trim() === "" && !isOptional) {
-                                field.classList.add("is-invalid");
-                                allValid = false;
-                                
-                                field.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                field.focus();
-                                return true;
-                            } else {
-                                field.classList.remove("is-invalid");
-                                allValid = true;
-                                return false;
-                            }
-                        });
-
-                        console.log("VALID WATOTO : " + allValid);
-
-                        // Reuse the same fields array for input validation
-                        fields.forEach(function (field) {
-                            field.addEventListener('input', function () {
-                                if (this.value.trim() !== "") {
-                                    this.classList.remove("is-invalid");
-                                    // Optionally: this.classList.add("is-valid");
-                                    allValid = true;
-                                }
-                            });
-                        });
-
-                    });
-
-                }
-                
-
-                if (allValid) {
-
-                    const namba_jeshi = document.getElementById('valueInputNambaJeshi').value;
-
-                    if(namba_jeshi == ""){
-                        $('#modalErrorMessage').text("Tafadhali jaza Namba ya Jeshi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-                    else if(taarifaBinafsiSaved == 0){
-                        $('#modalErrorMessage').text("Tafadhali hifadhi kwanza Taarifa Binafsi");
-                        $("#modalError").modal('show');
-                        return;
-                    }
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-
-                    // Kama zote ziko sawa, sasa tuma form
-                    const jina_baba = document.getElementById('valueInputJinaBaba').value;
-                    const hali_baba = document.getElementById('selectHaliBaba').value;
-                    const jina_mama = document.getElementById('valueInputJinaMama').value;
-                    const hali_mama = document.getElementById('selectHaliMama').value;
-                    const jina_mwenza = document.getElementById('valueInputJinaMwenza').value;
-                    const mwenza = document.getElementById('selectMwenza').value;
-                    const hali_mwenza = document.getElementById('selectHaliMwenza').value;
-                    const jina_baba_mkwe = document.getElementById('valueInputJinaBabaMkwe').value;
-                    const hali_baba_mkwe = document.getElementById('selectHaliBabaMkwe').value;
-                    const jina_mama_mkwe = document.getElementById('valueInputJinaMamaMkwe').value;
-                    const hali_mama_mkwe = document.getElementById('selectHaliMamaMkwe').value;
-                    const jina_mrithi = document.getElementById('valueInputJinaMrithi').value;
-                    const created_by = "ADMIN";
-                    const updated_by = "ADMIN";
-
-                    //WATOTO   
-                    const watotoData = [];             
-                    const watotoElements = $('#watotoContainer .form-item'); //Hii item ni class added upon dynamic creation
-                    console.log("WATOTO ELEMENTS : ");
-                    console.log(watotoElements);
-                    if (watotoElements.length === 0) {
-                        console.log('No watoto found, sending empty array.');
-                    } else {
-                        watotoElements.each(function(index, element) {
-                            const mtotoID = $(element).find('.form-control').attr('id').match(/\d+/)[0];
-
-                            console.log('ITERATION:', mtotoID);
-                            const data_id = document.querySelector(`#valueInputJinaKamiliMtoto${mtotoID}`).getAttribute("data-id");
-                            const jina_kamili = $(`#valueInputJinaKamiliMtoto${mtotoID}`).val();
-                            const aina_mtoto = $(`#aina_mtoto_select${mtotoID.match(/\d+/)[0]}`).val();
-
-                            watotoData.push({
-                                data_id: data_id,
-                                jina_kamili: jina_kamili,
-                                aina_mtoto: aina_mtoto,
-                            });
-                        });
-                    }
-            
-                    console.log('WATOTO JSON:', JSON.stringify(watotoData));
-
-                    
-                    document.querySelector('.loader-overlay').style.display = 'flex';
-                    $.ajax({
-                        url: '/wanamaji/save-taarifa-familia',  // Your endpoint
-                        type: 'POST',
-                        data: {
-                            namba_jeshi : namba_jeshi,
-                            jina_baba : jina_baba,
-                            hali_baba: hali_baba,
-                            jina_mama: jina_mama,
-                            hali_mama: hali_mama,
-                            jina_mwenza : jina_mwenza,
-                            mwenza : mwenza,
-                            hali_mwenza : hali_mwenza,
-                            jina_baba_mkwe: jina_baba_mkwe,
-                            hali_baba_mkwe: hali_baba_mkwe,
-                            jina_mama_mkwe: jina_mama_mkwe,
-                            hali_mama_mkwe: hali_mama_mkwe,
-                            jina_mrithi: jina_mrithi,
-                            watoto: watotoData,
-                            created_by: created_by,
-                            updated_by: updated_by,
-                        },
-
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},  // Laravel CSRF token
-                        success: function(response) {
-                            console.log('RESPONSE : ', response);
-                            if(response.error == 0){
-                                applicationSubmitted = 1; //Hii kuzuia mtu akirudi back then Next
-                                application_id = response.application_id;
-                                
-                                console.log('Data saved successfully:', response);
-
-                                $('#valueInputNambaJeshi').prop('disabled', true);
-
-                                const allWatotoDivs = document.querySelectorAll('#watotoContainer .form-item');
-                                allWatotoDivs.forEach(div => div.remove());
-
-                                formCountWatoto = 0;
-                                
-                                populateWatoto(response.watoto);
-
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                    if ($('#borderedSuccessToastTaarifaFamilia').length) {
-
-                                        $('#borderedSuccessToastTaarifaFamilia .toast-body h6').text(response.message);
-                                        const toastInstance = bootstrap.Toast.getOrCreateInstance(document.getElementById('borderedSuccessToastTaarifaFamilia'));
-                                        toastInstance.show();
-                                    }
-                                }, 1000);
-
-                            }else{
-                                setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                                }, 1000);
-                                $('#modalErrorMessage').text(response.message);
-                                $("#modalError").modal('show')
-                            }
-
-                            // You might want to clear forms or show a success message
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Error saving data:', xhr.responseText);
-                            setTimeout(function() {
-                                    document.querySelector('.loader-overlay').style.display = 'none';
-                            }, 1000);
-                            // Handle errors here
-                        }
-                    });
-                }else{
-
-                }
-            
-            });
-
         });
 
         //Function to check if formContainer is empty
@@ -4138,97 +2908,6 @@
     </script>
     @endif
 
-    @if(Route::currentRouteNamed('users-page'))
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tableContainer = document.getElementById("table-users-gridjs");
-
-            if (tableContainer) {
-                const grid = new gridjs.Grid({
-                    columns: [
-                        { name: "Namba Jeshi", width: "100px" },
-                        {
-                            name: "Jina Kamili",
-                            width: "140px",
-                            formatter: e => gridjs.html(`<a href="#">${e}</a>`)
-                        },
-                        { name: "Cheo", width: "96px" },
-                        { name: "Kikosi", width: "120px" },
-                        { name: "Kombania", width: "96px" },
-                        { name: "Simu", width: "96px" },
-                        {
-                            name: "Actions",
-                            width: "120px",
-                            formatter: (cell, row) => gridjs.html(`
-                                <button type="button" class="btn btn-sm btn-soft-info edit-btn" data-form_id="${row.cells[0].data}">View</button>
-                                <button type="button" class="btn btn-sm btn-soft-danger delete-btn" data-form_id="${row.cells[0].data}">Delete</button>
-                            `)
-                        }
-                    ],
-                    pagination: { limit: 5 },
-                    sort: true,
-                    search: true,
-                    data: () => {
-                        const loader = document.querySelector('.loader-overlay');
-                        if (loader) loader.style.display = 'flex'; // Show loader before fetch
-
-                        return fetch("/wanamaji/load-users")
-                            .then(response => response.json())
-                            .then(json => {
-                                console.log("Users loaded:", json.users.data);
-                                if (loader) loader.style.display = 'none'; // Hide loader after success
-                                return json.users.data.map(form => [
-                                    form.namba_jeshi,
-                                    `${form.fname} ${form.middle || ''} ${form.lname || ''}`.trim(),
-                                    form.cheo.name,
-                                    form.kikosi.name,
-                                    form.kombania,
-                                    form.namba_simu,
-                                    null
-                                ]);
-                            })
-                            .catch(error => {
-                                console.error("Error loading users:", error);
-                                if (loader) loader.style.display = 'none'; // Hide loader on error
-                                return []; // Prevent Grid.js from breaking
-                            });
-                    }
-                }).render(tableContainer);
-
-                    // Attach listener AFTER Grid.js renders
-                    grid.on('ready', () => {
-                    tableContainer.addEventListener('click', function (event) {
-                        const target = event.target;
-
-                        if (target.classList.contains('edit-btn')) {
-                        const formId = target.getAttribute('data-form_id');
-                        // window.location.href = '/wanamaji/form/' + formId + '/edit';
-                        window.location.href = '/wanamaji/form/' + btoa(formId) + '/edit';
-
-                        }
-
-                        if (target.classList.contains('delete-btn')) {
-                        const formId = target.getAttribute('data-form_id');
-                        if (confirm('Are you sure you want to delete this form?')) {
-                            // Handle deletion here via AJAX or redirect
-                            console.log('Delete form ID:', formId);
-                        }
-                        }
-                    });
-                    });
-                }
-            });
-
-
-        $('.edit-btn').on('click', function() {
-            var id = $(this).data('form_id');
-            // window.location.href = '' + id + '/edit';
-            window.location.href = '/wanamaji/form/' + id + '/edit';
-        });
-        
-    </script>
-    @endif
-
     @if(Route::currentRouteNamed('dashboard'))
     <script>
 
@@ -4258,6 +2937,11 @@
                     $("#magogoniTrxs").text(data.magogoniTrxs);
                     $("#kigamboniTrxs").text(data.kigamboniTrxs);
                     $("#offlineTrxs").text(data.offlineTrxs);
+
+                    $("#totalAmount").text(data.totalAmount);
+                    $("#magogoniAmount").text(data.magogoniAmount);
+                    $("#kigamboniAmount").text(data.kigamboniAmount);
+                    $("#offlineAmount").text(data.offlineAmount);
                 },
                 error: function (xhr) {
                     console.error("Failed to load initial summary", xhr);
@@ -4315,6 +2999,12 @@
                                 $("#magogoniTrxs").text(data.magogoniTrxs);
                                 $("#kigamboniTrxs").text(data.kigamboniTrxs);
                                 $("#offlineTrxs").text(data.offlineTrxs);
+
+                                $("#totalAmount").text(data.totalAmount);
+                                $("#magogoniAmount").text(data.magogoniAmount);
+                                $("#kigamboniAmount").text(data.kigamboniAmount);
+                                $("#offlineAmount").text(data.offlineAmount);
+                                
                             } catch (err) {
                                 console.error("Invalid message:", message.body);
                             }
@@ -8318,6 +7008,208 @@
             }
 
         </script>
+    @endif
+
+
+    @if(Route::currentRouteNamed('users-page'))
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tableContainer = document.getElementById("table-users-gridjs");
+
+            const token = sessionStorage.getItem("api-token");
+
+            if (tableContainer) {
+                const grid = new gridjs.Grid({
+                    columns: [
+                        { name: "First Name", width: "100px" },
+                        {
+                            name: "Last Name",
+                            width: "140px",
+                            formatter: e => gridjs.html(`<a href="#">${e}</a>`)
+                        },
+                        { name: "Title", width: "96px" },
+                        { name: "Email", width: "120px" },
+                        { name: "Phone", width: "96px" },
+                        { name: "Simu", width: "96px" },
+                        {
+                            name: "Actions",
+                            width: "120px",
+                            formatter: (cell, row) => gridjs.html(`
+                                <button type="button" class="btn btn-sm btn-soft-info edit-btn" data-form_id="${row.cells[0].data}">View</button>
+                                <button type="button" class="btn btn-sm btn-soft-danger delete-btn" data-form_id="${row.cells[0].data}">Delete</button>
+                            `)
+                        }
+                    ],
+                    pagination: { limit: 5 },
+                    sort: true,
+                    search: true,
+                    data: () => {
+                        const loader = document.querySelector('.loader-overlay');
+                        if (loader) loader.style.display = 'flex'; // Show loader before fetch
+
+                        return fetch("http://azam-onsite.local:9090/api/users/all", {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}` // or sessionStorage
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(json => {
+                                console.log("Users loaded:", json.data);
+                                if (loader) loader.style.display = 'none'; // Hide loader after success
+                                return json.data.map(form => [
+                                    form.namba_jeshi,
+                                    `${form.fname} ${form.middle || ''} ${form.lname || ''}`.trim(),
+                                    form.cheo.name,
+                                    form.kikosi.name,
+                                    form.kombania,
+                                    form.namba_simu,
+                                    null
+                                ]);
+                            })
+                            .catch(error => {
+                                console.error("Error loading users:", error);
+                                // alert("Failed to load user data. Please try again later.");
+                                if (loader) loader.style.display = 'none'; // Hide loader on error
+                                return []; // Prevent Grid.js from breaking
+                            });
+                    }
+                }).render(tableContainer);
+
+                    // Attach listener AFTER Grid.js renders
+                    grid.on('ready', () => {
+                    tableContainer.addEventListener('click', function (event) {
+                        const target = event.target;
+
+                        if (target.classList.contains('edit-btn')) {
+                        const formId = target.getAttribute('data-form_id');
+                        // window.location.href = '/wanamaji/form/' + formId + '/edit';
+                        window.location.href = '/form/' + btoa(formId) + '/edit';
+
+                        }
+
+                        if (target.classList.contains('delete-btn')) {
+                        const formId = target.getAttribute('data-form_id');
+                        if (confirm('Are you sure you want to delete this form?')) {
+                            // Handle deletion here via AJAX or redirect
+                            console.log('Delete form ID:', formId);
+                        }
+                        }
+                    });
+                    });
+                }
+            });
+
+
+        $('.edit-btn').on('click', function() {
+            var id = $(this).data('form_id');
+            // window.location.href = '' + id + '/edit';
+            window.location.href = '/form/' + id + '/edit';
+        });
+        
+    </script>
+    @endif
+
+
+    @if(Route::currentRouteNamed('devices-page'))
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tableContainer = document.getElementById("table-devices-gridjs");
+
+            const token = sessionStorage.getItem("api-token");
+
+            if (tableContainer) {
+                const grid = new gridjs.Grid({
+                    columns: [
+                        { name: "MAC", width: "100px" },
+                        {
+                            name: "IP Address",
+                            width: "140px",
+                            formatter: e => gridjs.html(`<a href="#">${e}</a>`)
+                        },
+                        { name: "LOCATION", width: "96px" },
+                        { name: "Status", width: "120px" }, //Online/ Offline
+                        { name: "Phone", width: "96px" },
+                        { name: "Simu", width: "96px" },
+                        {
+                            name: "Actions",
+                            width: "120px",
+                            formatter: (cell, row) => gridjs.html(`
+                                <button type="button" class="btn btn-sm btn-soft-info edit-btn" data-form_id="${row.cells[0].data}">View</button>
+                                <button type="button" class="btn btn-sm btn-soft-danger delete-btn" data-form_id="${row.cells[0].data}">Delete</button>
+                            `)
+                        }
+                    ],
+                    pagination: { limit: 5 },
+                    sort: true,
+                    search: true,
+                    data: () => {
+                        const loader = document.querySelector('.loader-overlay');
+                        if (loader) loader.style.display = 'flex'; // Show loader before fetch
+
+                        return fetch("http://azam-onsite.local:9090/api/devices/all", {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}` // or sessionStorage
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(json => {
+                                console.log("Users loaded:", json.data);
+                                if (loader) loader.style.display = 'none'; // Hide loader after success
+                                return json.data.map(form => [
+                                    form.namba_jeshi,
+                                    `${form.fname} ${form.middle || ''} ${form.lname || ''}`.trim(),
+                                    form.cheo.name,
+                                    form.kikosi.name,
+                                    form.kombania,
+                                    form.namba_simu,
+                                    null
+                                ]);
+                            })
+                            .catch(error => {
+                                console.error("Error loading users:", error);
+                                // alert("Failed to load user data. Please try again later.");
+                                if (loader) loader.style.display = 'none'; // Hide loader on error
+                                return []; // Prevent Grid.js from breaking
+                            });
+                    }
+                }).render(tableContainer);
+
+                    // Attach listener AFTER Grid.js renders
+                    grid.on('ready', () => {
+                    tableContainer.addEventListener('click', function (event) {
+                        const target = event.target;
+
+                        if (target.classList.contains('edit-btn')) {
+                        const formId = target.getAttribute('data-form_id');
+                        // window.location.href = '/wanamaji/form/' + formId + '/edit';
+                        window.location.href = '/form/' + btoa(formId) + '/edit';
+
+                        }
+
+                        if (target.classList.contains('delete-btn')) {
+                        const formId = target.getAttribute('data-form_id');
+                        if (confirm('Are you sure you want to delete this form?')) {
+                            // Handle deletion here via AJAX or redirect
+                            console.log('Delete form ID:', formId);
+                        }
+                        }
+                    });
+                    });
+                }
+            });
+
+
+        $('.edit-btn').on('click', function() {
+            var id = $(this).data('form_id');
+            // window.location.href = '' + id + '/edit';
+            window.location.href = '/form/' + id + '/edit';
+        });
+        
+    </script>
     @endif
 
   </body>
