@@ -21,18 +21,11 @@ class DashboardController extends Controller
                         SUM(CASE WHEN namba_jeshi LIKE 'MT%' OR namba_jeshi LIKE 'MTM%' THEN 1 ELSE 0 END) as askari,
                         COUNT(*) as jumla")->first();
 
-            $aina_misheni = AinaMisheni::all();
-            $kozi_kijeshi = Kozi::all();
-            $vikosi = Vikosi::all();
-
             return view('layouts.dashboard', [
                 "first_name" => $first_name, 
                 "balance" => $balance,
                 "currency" => $currency,
                 "summary" => $summary,
-                "vikosi" => $vikosi,
-                "aina_misheni" => $aina_misheni,
-                "kozi_kijeshi" => $kozi_kijeshi,
             ]);
             // Use $user as needed (e.g., pass it to a view)
            // return view('user-info', ['user' => $user]);

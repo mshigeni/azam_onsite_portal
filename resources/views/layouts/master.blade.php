@@ -2973,6 +2973,239 @@
             }
             
             // ✅ WebSocket connection
+            // function connect() {
+            //     console.log("Connecting to WebSocket...");
+            //     const socket = new SockJS("http://azam-onsite.local:9090/ws");
+
+            //     const stompClient = Stomp.over(socket);
+            //     let reconnectDelay = 2000; // start with 2 seconds
+
+            //     // Optionally disable debug logs
+            //     stompClient.debug = null;
+
+            //     stompClient.connect(
+            //         { Authorization: "Bearer " + token }, // ✅ send JWT if needed
+            //         function () {
+            //             console.log("✅ Connected to WebSocket!");
+            //             updateWsStatus(true);
+            //             reconnectDelay = 2000; 
+
+            //             // Subscribe to topic
+            //             stompClient.subscribe("/topic/dashboard", function (message) {
+            //                 try {
+            //                     console.log("📊 Dashboard update:", message.body);
+            //                     const data = JSON.parse(message.body);
+            //                     $("#totalTrxs").text(data.totalTrxs);
+            //                     $("#magogoniTrxs").text(data.magogoniTrxs);
+            //                     $("#kigamboniTrxs").text(data.kigamboniTrxs);
+            //                     $("#offlineTrxs").text(data.offlineTrxs);
+
+            //                     $("#totalAmount").text(data.totalAmount);
+            //                     $("#magogoniAmount").text(data.magogoniAmount);
+            //                     $("#kigamboniAmount").text(data.kigamboniAmount);
+            //                     $("#offlineAmount").text(data.offlineAmount);
+                                
+            //                 } catch (err) {
+            //                     console.error("Invalid message:", message.body);
+            //                 }
+            //             });
+            //         },
+            //         function (error) {
+            //             console.error("❌ WebSocket error:", error);
+            //             updateWsStatus(false);
+            //             console.log(`Reconnecting in ${reconnectDelay / 1000} seconds...`);
+            //             // Attempt reconnect after delay
+            //             setTimeout(() => {
+            //                 reconnectDelay = Math.min(reconnectDelay * 2, 30000); // max 30s
+            //                 console.log(`♻️ Reconnecting in ${reconnectDelay / 1000}s...`);
+            //                 connect();
+            //             }, reconnectDelay);
+            //         }
+            //     );
+            // }
+
+            // // Call directly (no need for another DOMContentLoaded)
+            // connect();
+
+        });
+
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const tableContainer = document.getElementById("table-gridjs");
+
+        //     if (tableContainer) {
+        //         let grid = new gridjs.Grid({
+        //             columns: [
+        //                 { name: "Namba Jeshi", width: "100px" },
+        //                 {
+        //                     name: "Jina Kamili",
+        //                     width: "140px",
+        //                     formatter: e => gridjs.html(`<a href="#">${e}</a>`)
+        //                 },
+        //                 { name: "Cheo", width: "96px" },
+        //                 { name: "Kikosi", width: "120px" },
+        //                 { name: "Kombania", width: "96px" },
+        //                 { name: "Simu", width: "96px" },
+        //                 {
+        //                     name: "Actions",
+        //                     width: "120px",
+        //                     formatter: (cell, row) => gridjs.html(`
+        //                         <button type="button" class="btn btn-sm btn-soft-info edit-btn" data-form_id="${row.cells[0].data}">View</button>
+        //                         <button type="button" class="btn btn-sm btn-soft-danger delete-btn" data-form_id="${row.cells[0].data}">Delete</button>
+        //                     `)
+        //                 }
+        //             ],
+        //             pagination: { limit: 5 },
+        //             sort: true,
+        //             search: true,
+        //             data: loadData // function below
+        //         }).render(tableContainer);
+
+        //         // ---- Data loader with POST filters ----
+        //         function loadData() {
+        //             const loader = document.querySelector('.loader-overlay');
+        //             if (loader) loader.style.display = 'flex';
+
+        //             // Get filter values
+        //             const kikosi = document.getElementById("selectKikosi").value;
+        //             const misheni = document.getElementById("aina_misheni").value;
+        //             const kozi   = document.getElementById("kozi_kijeshi").value;
+
+        //             return fetch("/wanamaji/filter-data", {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                     // "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Laravel CSRF
+        //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //                 },
+        //                 body: JSON.stringify({
+        //                     kikosi: kikosi,
+        //                     misheni: misheni,
+        //                     kozi: kozi
+        //                 })
+        //             })
+        //                 .then(response => response.json())
+        //                 .then(json => {
+        //                     if (loader) loader.style.display = 'none';
+        //                     // --- Update Dashboard Summary ---
+        //                     document.getElementById("maafisaCount").innerText = json.summary.maafisa;
+        //                     document.getElementById("askariCount").innerText  = json.summary.askari;
+        //                     document.getElementById("jumlaCount").innerText   = json.summary.jumla;
+
+        //                     // --- Populate table ---
+        //                     return json.forms.data.map(form => [
+        //                         form.namba_jeshi,
+        //                         `${form.fname} ${form.middle || ''} ${form.lname || ''}`.trim(),
+        //                         form.cheo.name,
+        //                         form.kikosi.name,
+        //                         form.kombania,
+        //                         form.namba_simu,
+        //                         null
+        //                     ]);
+        //                 })
+        //                 .catch(error => {
+        //                     console.error("Error loading forms:", error);
+        //                     if (loader) loader.style.display = 'none';
+        //                     return [];
+        //                 });
+        //         }
+
+        //         // ---- Refresh when Tafuta clicked ----
+        //         document.getElementById("filterData").addEventListener("click", () => {
+        //             grid.updateConfig({ data: loadData }).forceRender();
+        //         });
+
+        //         // ---- Action buttons ----
+        //         grid.on('ready', () => {
+        //             tableContainer.addEventListener('click', function (event) {
+        //                 const target = event.target;
+
+        //                 if (target.classList.contains('edit-btn')) {
+        //                     const formId = target.getAttribute('data-form_id');
+        //                     // window.location.href = '/wanamaji/form/' + formId + '/edit';
+        //                     window.location.href = '/wanamaji/form/' + btoa(formId) + '/edit';
+        //                 }
+
+        //                 if (target.classList.contains('delete-btn')) {
+        //                     const formId = target.getAttribute('data-form_id');
+        //                     if (confirm('Are you sure you want to delete this form?')) {
+        //                         console.log('Delete form ID:', formId);
+        //                         // Perform delete AJAX if needed
+        //                     }
+        //                 }
+        //             });
+        //         });
+        //     }
+        // });
+        
+    </script>
+    @endif
+
+
+    @if(Route::currentRouteNamed('realtime'))
+    <script>
+
+        $(document).ready(function () {
+            const token = sessionStorage.getItem("api-token");
+            // const roles = JSON.parse(sessionStorage.getItem("roles") || "[]");
+
+            if (!token) {
+                // Not logged in
+                window.location.href = '{{ route("logout") }}';
+                return;
+            }
+
+            // ✅ Role check on frontend
+            // if (!roles.includes("USER")) {
+            //     alert("You do not have permission to access this page!");
+            //     window.location.href = "/login.html";
+            //     return;
+            // }
+
+            // 1️⃣ Initial snapshot from REST
+            $.ajax({
+                url: "http://azam-onsite.local:9090/api/dashboard/summary",
+                headers: { "Authorization": "Bearer " + token },
+                success: function (data) {
+                    $("#totalTrxs").text(data.totalTrxs);
+                    $("#magogoniTrxs").text(data.magogoniTrxs);
+                    $("#kigamboniTrxs").text(data.kigamboniTrxs);
+                    $("#offlineTrxs").text(data.offlineTrxs);
+
+                    $("#totalAmount").text(data.totalAmount);
+                    $("#magogoniAmount").text(data.magogoniAmount);
+                    $("#kigamboniAmount").text(data.kigamboniAmount);
+                    $("#offlineAmount").text(data.offlineAmount);
+                },
+                error: function (xhr) {
+                    console.error("Failed to load initial summary", xhr);
+                    if (xhr.status === 401) {
+                        alert("Session expired, please login again.");
+                        window.location.href = '{{ route("logout") }}';
+                    } else if (xhr.status === 403) {
+                        alert("Forbidden: wrong role.");
+                        window.location.href = '{{ route("logout") }}';
+                    }
+                }
+            });
+
+            // Get today's date in YYYY-MM-DD format
+            const todayDate = new Date().toISOString().split('T')[0];
+            console.log("Today:", todayDate);
+            document.getElementById("valueInputStartDate").value = todayDate;
+            document.getElementById("valueInputEndDate").value = todayDate;
+
+            function updateWsStatus(connected) {
+                const statusEl = document.getElementById("wsStatus");
+                if (connected) {
+                    statusEl.textContent = "🟢 Connected";
+                    statusEl.className = "badge bg-success";
+                } else {
+                    statusEl.textContent = "🔴 Disconnected";
+                    statusEl.className = "badge bg-danger";
+                }
+            }
+            
+            // ✅ WebSocket connection
             function connect() {
                 console.log("Connecting to WebSocket...");
                 const socket = new SockJS("http://azam-onsite.local:9090/ws");
@@ -7129,9 +7362,8 @@
                             formatter: e => gridjs.html(`<a href="#">${e}</a>`)
                         },
                         { name: "LOCATION", width: "96px" },
-                        { name: "Status", width: "120px" }, //Online/ Offline
-                        { name: "Phone", width: "96px" },
-                        { name: "Simu", width: "96px" },
+                        { name: "State", width: "120px" }, //Online/ Offline
+                        { name: "Status", width: "96px" },
                         {
                             name: "Actions",
                             width: "120px",
@@ -7148,7 +7380,7 @@
                         const loader = document.querySelector('.loader-overlay');
                         if (loader) loader.style.display = 'flex'; // Show loader before fetch
 
-                        return fetch("http://azam-onsite.local:9090/api/devices/all", {
+                        return fetch("http://azam-onsite.local:9090/api/devices", {
                                 method: "GET",
                                 headers: {
                                     "Content-Type": "application/json",
@@ -7156,16 +7388,15 @@
                                 }
                             })
                             .then(response => response.json())
-                            .then(json => {
-                                console.log("Users loaded:", json.data);
+                            .then(json => { 
+                                console.log("Devices loaded:", json);
                                 if (loader) loader.style.display = 'none'; // Hide loader after success
-                                return json.data.map(form => [
-                                    form.namba_jeshi,
-                                    `${form.fname} ${form.middle || ''} ${form.lname || ''}`.trim(),
-                                    form.cheo.name,
-                                    form.kikosi.name,
-                                    form.kombania,
-                                    form.namba_simu,
+                                return json.map(form => [
+                                    form.mac_addr,
+                                    form.ip_addr,
+                                    form.site,
+                                    form.state,
+                                    form.status,
                                     null
                                 ]);
                             })

@@ -10,6 +10,7 @@ Route::get('/', function () {
 
 Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
 Route::get('/dashboard', function () {return view('layouts.dashboard');})->name('dashboard');
+Route::get('/realtime', function () {return view('layouts.realtime');})->name('realtime');
 Route::get('/users', function () {return view('layouts.users');})->name('users-page');
 Route::get('/devices', function () {return view('layouts.devices');})->name('devices-page');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
